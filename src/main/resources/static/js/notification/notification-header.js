@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    var POLL_INTERVAL_MS = 5000;
+    var POLL_INTERVAL_MS = 5000; // 5초마다 폴링
     var TOAST_AUTO_CLOSE_MS = 5000;
 
     var bellBtn = document.getElementById('notifBellBtn');
@@ -15,8 +15,7 @@
         return;
     }
 
-    // 마이페이지(Dv-044) "실시간 웹 알림 수신" 토글. N이면 새 알림을 자동으로 감지해
-    // 배지를 갱신하거나 토스트를 띄우지 않는다. (종 아이콘을 눌러 직접 확인하는 것은 항상 가능)
+    // 마이페이지 "실시간 웹 알림 수신" 토글→N이면 배지 갱신·토스트 안 띄움
     var WEB_NOTIF_ENABLED = notifWrap ? notifWrap.getAttribute('data-web-notif-yn') !== 'N' : true;
 
     var LAST_SEEN_KEY = 'weple_notif_last_seen_alarm_id';

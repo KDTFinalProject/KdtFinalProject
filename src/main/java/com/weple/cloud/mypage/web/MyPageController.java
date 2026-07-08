@@ -32,7 +32,7 @@ public class MyPageController {
         return "weple/mypage/main";
     }
 
-    // 등록 버튼 - 알림 설정 저장
+    // 알림 설정 저장
     @PostMapping("/mypage/notification")
     public String updateNotification(@AuthenticationPrincipal LoginUserDetails loginUser,
             @ModelAttribute MyPageNotificationUpdateVO request,
@@ -40,10 +40,7 @@ public class MyPageController {
         request.setUserCode(loginUser.getLoginUser().getUserCode());
         try {
             myPageService.updateNotificationSetting(request);
-
-            // saveProfile()에서 profileImage를 세션에 즉시 반영하는 것과 동일하게,
-            // 저장된 알림 설정도 세션(LoginUserVO)에 바로 반영해야 헤더의 실시간 알림(JS)이
-            // 재로그인 없이 곧바로 새 설정을 따른다.
+            
             loginUser.getLoginUser().setWebNotificationYn(request.getWebNotificationYn());
             loginUser.getLoginUser().setEmailNotificationYn(request.getEmailNotificationYn());
             loginUser.getLoginUser().setNotificationArea(request.getNotificationArea());

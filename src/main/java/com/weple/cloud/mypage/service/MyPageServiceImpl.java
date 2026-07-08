@@ -94,7 +94,7 @@ public class MyPageServiceImpl implements MyPageService {
             throw new IllegalStateException("프로필 사진을 저장할 수 없습니다.");
         }
 
-        deleteFromS3IfPresent(previousImageUrl);
+        deleteFromS3IfPresent(previousImageUrl); // 새 업로드 성공 후에만 기존 이미지 삭제
         return profileImageUrl;
     }
 

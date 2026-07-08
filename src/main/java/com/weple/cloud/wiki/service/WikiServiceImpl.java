@@ -170,7 +170,6 @@ public class WikiServiceImpl implements WikiService {
     }
 
     // 트리 변환
-
     private List<WikiPageVO> buildTree(List<WikiPageVO> flatList) {
         Map<String, WikiPageVO> map   = new LinkedHashMap<>();
         List<WikiPageVO>        roots = new ArrayList<>();
@@ -182,9 +181,9 @@ public class WikiServiceImpl implements WikiService {
         for (WikiPageVO vo : flatList) {
             String pid = vo.getParentPageId();
             if (pid == null || pid.isBlank() || !map.containsKey(pid)) {
-                roots.add(vo);
+                roots.add(vo); // 부모가 없으면 최상위
             } else {
-                map.get(pid).getChildren().add(vo);
+                map.get(pid).getChildren().add(vo); // 있으면 부모의 자식으로 편입
             }
         }
         return roots;

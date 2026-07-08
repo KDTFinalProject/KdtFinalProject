@@ -601,10 +601,7 @@ public class SystemController {
 	          // ↓ 3번 항목(생성자 구성원 자동 등록)과 같이 처리
 	            Long companyId = loginUser.getLoginUser().getCompanyId();
 
-	            // "관리자"라는 이름의 역할을 먼저 찾고, 회사마다 역할 이름이 다르거나
-	            // 그 이름의 역할이 없을 수 있으므로 k1_create 권한을 가진 역할로 폴백한다.
-	            // (이름 기반 조회만 있으면 폴백 없이 역할 배정 자체가 조용히 스킵되어,
-	            //  방금 생성한 사람이 정작 그 프로젝트를 수정/삭제하지 못하는 버그가 있었음)
+	            // "관리자"라는 이름의 역할을 먼저 찾고 없으면 k1_create 권한을 가진 역할로 폴백
 	            Long adminRoleId = roleService.selectRoleIdByName(companyId, "관리자");
 	            if (adminRoleId == null) {
 	                adminRoleId = roleService.selectRoleIdByPermission(companyId, "k1_create");
