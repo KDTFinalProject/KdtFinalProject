@@ -181,7 +181,7 @@ function showConfirm(title, desc) {
 
 
 
-// 💡 새롭게 추가하는 부분 새로고침 함수
+//  새로고침 함수
 function reloadCommentList() {
 	const projectId = document.getElementById('currentProjectId').value;
 	const currentTaskId = document.getElementById('currentTaskId').value; // 실시간으로 가져오기

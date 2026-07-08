@@ -774,28 +774,30 @@ public class TaskController {
 	
 	// 댓글만 ajax 목록 다시 불러오기
 	@GetMapping("/api/task/comments/fragment/{tId}")
-	public String getCommentFragment(@PathVariable("tId") String tId,@RequestParam("projectId") Long pId,  Model model, @AuthenticationPrincipal LoginUserDetails loginUser) {
+	public String getCommentFragment(@PathVariable("tId") String tId,
+										@RequestParam("projectId") Long pId, 
+										Model model, 
+										@AuthenticationPrincipal LoginUserDetails loginUser) {
+		
 		String userCode = loginUser.getLoginUser().getUserCode();
+		
+		//로그인정보 확인
 		if (loginUser != null && loginUser.getLoginUser() != null) {
 	        model.addAttribute("currentUserCode", userCode);
 	    } else {
 	        model.addAttribute("currentUserCode", null);
 	    }
 		
-		
 	    Integer ownerYn = loginUser.getLoginUser().getOwnerYn();
 	    Integer adminYn = loginUser.getLoginUser().getAdminYn();
 	    // 최신 댓글 목록 다시 조회
 	    List<TaskCommentVO> taskComment = taskService.findTaskComment(tId);
-	    System.out.println("fragment tId = " + tId);
-	    model.addAttribute("taskComment", taskComment);
 	    
-	    // 권한 처리를 위한 로그인 유저 코드 세팅
-	    
-	    
+	    //관리자 여부
 	    boolean isAdminOrOwner = (ownerYn != null && ownerYn == 1) || (adminYn != null && adminYn == 1);
 	    TaskPermissionVO taskPerms = taskService.getTaskPermissions(userCode, pId);
 	    
+	    model.addAttribute("taskComment", taskComment);
 	    model.addAttribute("isAdminOrOwner", isAdminOrOwner);
 	    model.addAttribute("taskPerms", taskPerms);
 	    
