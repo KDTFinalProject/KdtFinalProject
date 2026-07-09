@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
     if (!tableBody) return;
 
-    // 1. 드래그 앤 드랍 정렬 (SortableJS)
+    // 1. 드래그 앤 드랍 정렬 
     Sortable.create(tableBody, {
         animation: 150,
         handle: '.drag-handle',

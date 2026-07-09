@@ -26,16 +26,14 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/project/milestone/api")
 public class MilestoneRestController {
 
-    // [추가] 일감 편집 관련 권한 코드 상수 정의
+    // 일감 편집 관련 권한 코드 상수 정의
     private static final String PERMISSION_TASK_UPDATE = "k3_edit";
     private static final String PERMISSION_TASK_MYUPDATE = "k3_myedit";
 
     private final MilestoneService milestoneService;
     private final RepositoryService repositoryService; // [추가] 프로젝트별 팀원 권한 조회 서비스
 
-    /**
-     * 마일스톤 상세페이지 - 연결된 일감 실시간 업데이트 (보안 권한 체크 반영)
-     */
+     // 마일스톤 상세페이지 - 연결된 일감 실시간 업데이트 
     @PostMapping("/update-task-mapping")
     public ResponseEntity<Map<String, Object>> updateTaskMapping(
             @AuthenticationPrincipal LoginUserDetails loginUser, // [추가] 인증 정보 객체 주입
@@ -84,11 +82,8 @@ public class MilestoneRestController {
         }
     }
 
-    /* ================= 팀원 양식 맞춤 권한 체크 유틸리티 메서드 ================= */
 
-    /**
-     * 기업 최고관리자/관리자면 전체 허용, 일반 사용자면 프로젝트별 권한 목록 조회
-     */
+     // 기업 최고관리자/관리자면 전체 허용, 일반 사용자면 프로젝트별 권한 목록 조회
     private Set<String> findMilestonePermissionCodes(LoginUserDetails loginUser, Long projectId) {
         if (loginUser == null || loginUser.getLoginUser() == null) {
             return Set.of();

@@ -47,7 +47,7 @@ public class MilestoneController {
 	public String milestoneList(@AuthenticationPrincipal LoginUserDetails loginUser, 
 								@RequestParam Long projectId, 
 								Model model) {
-		// [추가] 프로젝트 참여 멤버 검증
+		// 프로젝트 참여 멤버 검증
 		if (!hasProjectAccess(loginUser, projectId)) {
 			return "weple/access-denide";
 		}
@@ -364,11 +364,8 @@ public class MilestoneController {
 		return "redirect:/project/milestone?projectId=" + projectId;
 	}
 
-	/* ================= 팀원 양식 맞춤 권한 체크 유틸리티 메서드 ================= */
 
-	/**
-	 * [추가] 프로젝트 메뉴 접근 권한 체크 (최고관리자/시스템관리자는 pass, 일반 유저는 members 테이블 확인)
-	 */
+	//프로젝트 메뉴 접근 권한 체크 - 최고관리자/시스템관리자는 pass, 일반 유저는 members 테이블 확인
 	private boolean hasProjectAccess(LoginUserDetails loginUser, Long projectId) {
 		if (loginUser == null || loginUser.getLoginUser() == null || projectId == null) {
 			return false;
@@ -382,6 +379,10 @@ public class MilestoneController {
 		
 		// 일반 사용자는 DB의 members 테이블 참여 여부 판별
 		return milestoneService.checkProjectMembership(projectId, user.getUserCode());
+	}
+	
+	private boolean isCompanyManager(LoginUserVO user) {
+		return Integer.valueOf(1).equals(user.getOwnerYn()) || Integer.valueOf(1).equals(user.getAdminYn());
 	}
 
 	private Set<String> findMilestonePermissionCodes(LoginUserDetails loginUser, Long projectId) {
@@ -403,12 +404,12 @@ public class MilestoneController {
 	private boolean hasMilestonePermission(Set<String> permissionCodes, String permissionCode) {
 		return permissionCodes != null && permissionCodes.contains(permissionCode);
 	}
-
-	private boolean isCompanyManager(LoginUserVO user) {
-		return Integer.valueOf(1).equals(user.getOwnerYn()) || Integer.valueOf(1).equals(user.getAdminYn());
-	}
-
+	
 	private void addMilestonePermissionAttributes(Model model, Set<String> permissionCodes) {
 		model.addAttribute("canManageMilestone", hasMilestonePermission(permissionCodes, PERMISSION_MILESTONE_CREATE_UPDATE_DELETE));
 	}
+
+	
+
+	
 }
